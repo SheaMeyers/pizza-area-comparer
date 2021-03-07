@@ -30,7 +30,7 @@ function App() {
     "number": 1,
     "diameter": 20,
     "price": 1399,
-    "pricePerUnit": 23
+    "pricePerUnit": 25
   }]
 
   const classes = useStyles();
@@ -46,14 +46,15 @@ function App() {
       </Card>
 
       
-      {choices.map((choice) => {
+      {choices.map((choice, index) => {
         return (
           <Card className={classes.addPizza}>
             <CardContent>
-              <p>Choice nummber {choice.number}</p>
-              <p>Choice diameter {choice.diameter}</p>
-              <p>Choice price {choice.price}</p>
-              <p>Choice price per unit {choice.pricePerUnit}</p>
+              <span>{index}</span>
+              <TextField disabled label={"Number:" + choice.number} variant="outlined" />
+              <TextField disabled label={"Diameter:" + choice.diameter} variant="outlined" />
+              <TextField disabled label={"Price:" + choice.price} variant="outlined" />
+              <TextField disabled label={"Price per 'unit':" + choice.pricePerUnit} variant="outlined" />
             </CardContent>
           </Card>
       )})}
