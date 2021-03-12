@@ -35,6 +35,22 @@ function App() {
 
   const classes = useStyles();
   const [choices, setChoices] = useState(exampleChoices);
+  const [bestChoice, setBestChoice] = useState(0);
+
+  const calculateBestChoice = () => {
+    let tempBestChoice = 0;
+    let lowestPricePerUnit = null;
+    let i = 1;
+    for (const choice in choices) {
+      if (!lowestPricePerUnit || choices[choice].pricePerUnit > lowestPricePerUnit) {
+        tempBestChoice = i;
+        lowestPricePerUnit = choices[choice].pricePerUnit;
+      }
+      i++;
+    }
+
+    setBestChoice(tempBestChoice);
+  }
 
   return (
     <div className="App">
@@ -48,17 +64,26 @@ function App() {
       
       {choices.map((choice, index) => {
         return (
-          <Card className={classes.addPizza}>
-            <CardContent>
-              <span>{index}</span>
-              <TextField disabled label={"Number:" + choice.number} variant="outlined" />
-              <TextField disabled label={"Diameter:" + choice.diameter} variant="outlined" />
-              <TextField disabled label={"Price:" + choice.price} variant="outlined" />
-              <TextField disabled label={"Price per 'unit':" + choice.pricePerUnit} variant="outlined" />
-            </CardContent>
-          </Card>
+          <div>
+            <Card className={classes.addPizza}>
+              <CardContent>
+                <span>{index}</span>
+                <TextField disabled label={"Number:" + choice.number} variant="outlined" />
+                <TextField disabled label={"Diameter:" + choice.diameter} variant="outlined" />
+                <TextField disabled label={"Price:" + choice.price} variant="outlined" />
+                <TextField disabled label={"Price per 'unit':" + choice.pricePerUnit} variant="outlined" />
+              </CardContent>
+            </Card>
+        </div>
       )})}
-      
+
+      {bestChoice && 
+        <Card className={classes.addPizza}>
+          <CardContent>
+            <p>Option {bestChoice} is the best value</p>
+          </CardContent>
+        </Card>
+      }
 
       <Card className={classes.addPizza}>
         <CardContent>
@@ -72,6 +97,10 @@ function App() {
             const diameter = elements.diameter.value
             const price = elements.price.value;
 
+            elements.number.value = '';
+            elements.diameter.value = '';
+            elements.price.value = '';
+
             const radius = diameter/2;
             const area = 3.14 * radius * radius;
             const pricePerUnit = price / area;
@@ -84,10 +113,11 @@ function App() {
             }
 
             setChoices([...choices, newElement]);
+            calculateBestChoice();
           }}>
-            <TextField id="number-basic" name="number" label="Number" variant="outlined" />
-            <TextField id="diameter-basic" name="diameter" label="Diameter" variant="outlined" />
-            <TextField id="price-basic" name="price" label="Price" variant="outlined" />
+            <TextField required id="number-basic" name="number" label="Number" variant="outlined" />
+            <TextField required id="diameter-basic" name="diameter" label="Diameter" variant="outlined" />
+            <TextField required id="price-basic" name="price" label="Price" variant="outlined" />
             <Button variant="contained" color="primary" type="submit">
               Add
             </Button>
