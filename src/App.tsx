@@ -19,16 +19,42 @@ const useStyles = makeStyles({
 });
 
 interface Choice {
-  number: number;
+  numPizzas: number;
   diameter: number;
   price: number;
   pricePerUnit: number;
 }
 
+const moneyRegex: RegExp = /^\d{1,}(\.\d{0,2})?$/;
+const numberRegex: RegExp = /^\d+$/;
 
 function App() {
 
+  const handleNumPizzasChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    let value: string = event.target.value;
+    if (value.match(numberRegex) || value === '') {
+      setNumPizzas(parseInt(value));
+    }
+  }
+
+  const handleDiameterChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    let value: string = event.target.value;
+    if (value.match(numberRegex) || value === '') {
+      setDiameter(parseInt(value));
+    }
+  }
+
+  const handlePriceChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    let value: string = event.target.value;
+    if (value.match(moneyRegex) || value === '') {
+      setPrice(value);
+    }
+  }
+
   const classes = useStyles();
+  const [numPizzas, setNumPizzas] = useState<number | null>();
+  const [diameter, setDiameter] = useState<number | null>();
+  const [price, setPrice] = useState<string>('');
   const [choices, setChoices] = useState<Choice[] | []>([]);
   const [bestChoice, setBestChoice] = useState(0);
 
@@ -63,7 +89,7 @@ function App() {
             <Card className={classes.addPizza}>
               <CardContent>
                 <span>{index+1}</span>
-                <TextField disabled label={"Number:" + choice.number} variant="outlined" />
+                <TextField disabled label={"Number:" + choice.numPizzas} variant="outlined" />
                 <TextField disabled label={"Diameter:" + choice.diameter} variant="outlined" />
                 <TextField disabled label={"Price:" + choice.price} variant="outlined" />
                 <TextField disabled label={"Price per 'unit':" + choice.pricePerUnit} variant="outlined" />
@@ -88,20 +114,20 @@ function App() {
 
             // @ts-ignore
             const elements = event.target.elements;
-            const number = elements.number.value;
+            const numPizzas = elements.numPizzas.value;
             const diameter = elements.diameter.value
             const price = elements.price.value;
 
-            elements.number.value = '';
-            elements.diameter.value = '';
-            elements.price.value = '';
+            setNumPizzas(null);
+            setDiameter(null);
+            setPrice('');
 
             const radius = diameter/2;
             const area = 3.14 * radius * radius;
             const pricePerUnit = price / area;
 
             const newElement = {
-              "number": number,
+              "numPizzas": numPizzas,
               "diameter": diameter,
               "price": price,
               "pricePerUnit": pricePerUnit
@@ -110,9 +136,33 @@ function App() {
             setChoices([...choices, newElement]);
             calculateBestChoice();
           }}>
-            <TextField required id="number-basic" name="number" label="Number" variant="outlined" />
-            <TextField required id="diameter-basic" name="diameter" label="Diameter" variant="outlined" />
-            <TextField required id="price-basic" name="price" label="Price" variant="outlined" />
+            <TextField 
+              required 
+              id="num-pizzas-basic" 
+              name="numPizzas" 
+              label="Number" 
+              variant="outlined" 
+              value={numPizzas || ''}
+              onChange={event => handleNumPizzasChange(event)}
+            />
+            <TextField 
+              required 
+              id="diameter-basic" 
+              name="diameter" 
+              label="Diameter" 
+              variant="outlined" 
+              value={diameter || ''}
+              onChange={event => handleDiameterChange(event)}
+            />
+            <TextField 
+              required 
+              id="price-basic" 
+              name="price" 
+              label="Price" 
+              variant="outlined" 
+              value={price}
+              onChange={event => handlePriceChange(event)}
+            />
             <Button variant="contained" color="primary" type="submit">
               Add
             </Button>
