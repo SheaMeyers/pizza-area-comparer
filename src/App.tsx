@@ -18,23 +18,18 @@ const useStyles = makeStyles({
   }
 });
 
+interface Choice {
+  number: number;
+  diameter: number;
+  price: number;
+  pricePerUnit: number;
+}
+
 
 function App() {
 
-  const exampleChoices = [{
-    "number": 2,
-    "diameter": 10,
-    "price": 1499,
-    "pricePerUnit": 23
-  }, {
-    "number": 1,
-    "diameter": 20,
-    "price": 1399,
-    "pricePerUnit": 25
-  }]
-
   const classes = useStyles();
-  const [choices, setChoices] = useState(exampleChoices);
+  const [choices, setChoices] = useState<Choice[] | []>([]);
   const [bestChoice, setBestChoice] = useState(0);
 
   const calculateBestChoice = () => {
@@ -49,7 +44,7 @@ function App() {
       i++;
     }
 
-    setBestChoice(tempBestChoice);
+    setBestChoice(tempBestChoice+1);
   }
 
   return (
@@ -62,12 +57,12 @@ function App() {
       </Card>
 
       
-      {choices.map((choice, index) => {
+      {choices.map((choice: Choice, index: number) => {
         return (
           <div>
             <Card className={classes.addPizza}>
               <CardContent>
-                <span>{index}</span>
+                <span>{index+1}</span>
                 <TextField disabled label={"Number:" + choice.number} variant="outlined" />
                 <TextField disabled label={"Diameter:" + choice.diameter} variant="outlined" />
                 <TextField disabled label={"Price:" + choice.price} variant="outlined" />
@@ -77,7 +72,7 @@ function App() {
         </div>
       )})}
 
-      {bestChoice && 
+      {choices.length > 1 && 
         <Card className={classes.addPizza}>
           <CardContent>
             <p>Option {bestChoice} is the best value</p>
