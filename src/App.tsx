@@ -63,14 +63,19 @@ function App() {
     let lowestPricePerUnit = null;
     let i = 1;
     for (const choice in choices) {
-      if (!lowestPricePerUnit || choices[choice].pricePerUnit > lowestPricePerUnit) {
+      if (!lowestPricePerUnit || choices[choice].pricePerUnit < lowestPricePerUnit) {
         tempBestChoice = i;
         lowestPricePerUnit = choices[choice].pricePerUnit;
       }
       i++;
     }
 
-    setBestChoice(tempBestChoice+1);
+    setBestChoice(tempBestChoice);
+  }
+
+  const removeChoice = (choiceIndex: number) => {
+    setChoices(choices.filter((choice, index) => index !== choiceIndex))
+    calculateBestChoice();
   }
 
   return (
@@ -93,6 +98,7 @@ function App() {
                 <TextField disabled label={"Diameter:" + choice.diameter} variant="outlined" />
                 <TextField disabled label={"Price:" + choice.price} variant="outlined" />
                 <TextField disabled label={"Price per 'unit':" + choice.pricePerUnit} variant="outlined" />
+                <Button variant="contained" color="secondary" type="submit" onClick={() => removeChoice(index)}>Remove</Button>
               </CardContent>
             </Card>
         </div>
