@@ -56,9 +56,8 @@ function App() {
   const [diameter, setDiameter] = useState<number | null>();
   const [price, setPrice] = useState<string>('');
   const [choices, setChoices] = useState<Choice[] | []>([]);
-  const [bestChoice, setBestChoice] = useState(0);
 
-  const calculateBestChoice = () => {
+  const getBestChoice = () => {
     let tempBestChoice = 0;
     let lowestPricePerUnit = null;
     let i = 1;
@@ -70,12 +69,11 @@ function App() {
       i++;
     }
 
-    setBestChoice(tempBestChoice);
+    return tempBestChoice;
   }
 
   const removeChoice = (choiceIndex: number) => {
     setChoices(choices.filter((choice, index) => index !== choiceIndex))
-    calculateBestChoice();
   }
 
   return (
@@ -107,7 +105,7 @@ function App() {
       {choices.length > 1 && 
         <Card className={classes.addPizza}>
           <CardContent>
-            <p>Option {bestChoice} is the best value</p>
+            <p>Option {getBestChoice()} is the best value</p>
           </CardContent>
         </Card>
       }
@@ -140,7 +138,6 @@ function App() {
             }
 
             setChoices([...choices, newElement]);
-            calculateBestChoice();
           }}>
             <TextField 
               required 
