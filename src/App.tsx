@@ -127,7 +127,7 @@ function App() {
             setPrice('');
 
             const radius = diameter/2;
-            const area = 3.14 * radius * radius;
+            const area = numPizzas * 3.14 * radius * radius;
             const pricePerUnit = price / area;
 
             const newElement = {
