@@ -105,7 +105,7 @@ function App() {
                 <TextField disabled label={"Number:" + choice.numPizzas} variant="outlined" />
                 <TextField disabled label={"Diameter:" + choice.diameter} variant="outlined" />
                 <TextField disabled label={"Price:" + choice.price} variant="outlined" />
-                <TextField disabled label={"Price per 'unit':" + choice.pricePerUnit} variant="outlined" />
+                <TextField disabled label={"Price per 'unit':" + (choice.pricePerUnit*100).toFixed(3)} variant="outlined" />
                 <Button variant="contained" color="secondary" type="submit" onClick={() => removeChoice(index)}>Remove</Button>
               </CardContent>
             </Card>
