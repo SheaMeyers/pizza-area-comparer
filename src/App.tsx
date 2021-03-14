@@ -15,6 +15,16 @@ const useStyles = makeStyles({
     width: "90%",
     margin: 20,
     display: 'flex'
+  },
+  addPizzaCardContent: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-between"
+  },
+  addPizzaForm: {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'space-between'
   }
 });
 
@@ -90,8 +100,8 @@ function App() {
         return (
           <div>
             <Card className={classes.addPizza}>
-              <CardContent>
-                <span>{index+1}</span>
+              <CardContent className={classes.addPizzaCardContent}>
+                <p>{index+1}.</p>
                 <TextField disabled label={"Number:" + choice.numPizzas} variant="outlined" />
                 <TextField disabled label={"Diameter:" + choice.diameter} variant="outlined" />
                 <TextField disabled label={"Price:" + choice.price} variant="outlined" />
@@ -104,15 +114,15 @@ function App() {
 
       {choices.length > 1 && 
         <Card className={classes.addPizza}>
-          <CardContent>
-            <p>Option {getBestChoice()} is the best value</p>
+          <CardContent className={classes.addPizzaCardContent}>
+            <p>Option <b>{getBestChoice()}</b> is the best value</p>
           </CardContent>
         </Card>
       }
 
       <Card className={classes.addPizza}>
-        <CardContent>
-          <form onSubmit={event => {
+        <CardContent className={classes.addPizzaCardContent}>
+          <form  className={classes.addPizzaForm} onSubmit={event => {
             event.persist();
             event.preventDefault();
 
