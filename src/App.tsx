@@ -17,14 +17,9 @@ const useStyles = makeStyles({
     display: 'flex'
   },
   addPizzaCardContent: {
-    width: "100%",
     display: "flex",
+    width: "100%",
     justifyContent: "space-between"
-  },
-  addPizzaForm: {
-    display: 'flex',
-    width: '100%',
-    justifyContent: 'space-between'
   }
 });
 
@@ -40,17 +35,10 @@ const numberRegex: RegExp = /^\d+$/;
 
 function App() {
 
-  const handleNumPizzasChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  const handleNumFieldChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>, setHook: Function) => {
     let value: string = event.target.value;
     if (value.match(numberRegex) || value === '') {
-      setNumPizzas(parseInt(value));
-    }
-  }
-
-  const handleDiameterChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    let value: string = event.target.value;
-    if (value.match(numberRegex) || value === '') {
-      setDiameter(parseInt(value));
+      setHook(parseInt(value));
     }
   }
 
@@ -62,14 +50,14 @@ function App() {
   }
 
   const classes = useStyles();
-  const [numPizzas, setNumPizzas] = useState<number | null>();
-  const [diameter, setDiameter] = useState<number | null>();
+  const [numPizzas, setNumPizzas] = useState<number>(0);
+  const [diameter, setDiameter] = useState<number>(0);
   const [price, setPrice] = useState<string>('');
   const [choices, setChoices] = useState<Choice[] | []>([]);
 
   const getBestChoice = () => {
     let tempBestChoice = 0;
-    let lowestPricePerUnit = null;
+    let lowestPricePerUnit = 0;
     let i = 1;
     for (const choice in choices) {
       if (!lowestPricePerUnit || choices[choice].pricePerUnit < lowestPricePerUnit) {
@@ -95,7 +83,6 @@ function App() {
         </CardContent>
       </Card>
 
-      
       {choices.map((choice: Choice, index: number) => {
         return (
           <div>
@@ -122,7 +109,7 @@ function App() {
 
       <Card className={classes.addPizza}>
         <CardContent className={classes.addPizzaCardContent}>
-          <form  className={classes.addPizzaForm} onSubmit={event => {
+          <form  className={classes.addPizzaCardContent} onSubmit={event => {
             event.persist();
             event.preventDefault();
 
@@ -132,8 +119,8 @@ function App() {
             const diameter = elements.diameter.value
             const price = elements.price.value;
 
-            setNumPizzas(null);
-            setDiameter(null);
+            setNumPizzas(0);
+            setDiameter(0);
             setPrice('');
 
             const radius = diameter/2;
@@ -156,7 +143,7 @@ function App() {
               label="Number" 
               variant="outlined" 
               value={numPizzas || ''}
-              onChange={event => handleNumPizzasChange(event)}
+              onChange={event => handleNumFieldChange(event, setNumPizzas)}
             />
             <TextField 
               required 
@@ -165,7 +152,7 @@ function App() {
               label="Diameter" 
               variant="outlined" 
               value={diameter || ''}
-              onChange={event => handleDiameterChange(event)}
+              onChange={event => handleNumFieldChange(event, setDiameter)}
             />
             <TextField 
               required 
