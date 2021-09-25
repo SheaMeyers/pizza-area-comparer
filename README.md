@@ -8,4 +8,4 @@ To run this you can just clone the git directory.  Run `npm install` and then `n
 
 ## Live Demo
 
-https://sheameyers.com/pizza-area-comparer/
+https://pizza-area-comparer.sheameyers.com/

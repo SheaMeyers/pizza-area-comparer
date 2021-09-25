@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "repository": "https://github.com/SheaMeyers/pizza-area-comparer.git",
-  "homepage": "http://sheameyers.github.io/pizza-area-comparer",
+  "homepage": "https://pizza-area-comparer.sheameyers.com/",
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@testing-library/jest-dom": "^5.11.4",
